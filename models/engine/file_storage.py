@@ -9,7 +9,12 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
+        """returns a dictionary
+        Args:
+            cls: class type to filter return by
+        Return:
+            returns a dictionary of __object
+        """
         if cls:
             return {k: v for k, v in FileStorage.__objects.items()
                     if k.startswith(cls.__name__)}
@@ -53,6 +58,10 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
+        """deletes obj from __objects if it's inside
+        Args:
+            obj: given object
+        """
         if obj:
             del FileStorage.__objects['{}.{}'.format(
                 type(obj).__name__, obj.id)]
