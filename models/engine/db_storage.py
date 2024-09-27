@@ -33,7 +33,8 @@ class DBStorage:
         else:
             objs = self.__session.query(
                 User, State, City, Amenity, Place, Review).all()
-        return {"{}.{}".format(type(obj).__name__, obj.id): obj for obj in objs}
+        return {"{}.{}".format(type(obj).__name__, obj.id): obj
+                for obj in objs}
 
     def new(self, obj):
         self.__session.add(obj)

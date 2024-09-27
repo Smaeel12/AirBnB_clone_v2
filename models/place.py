@@ -8,9 +8,11 @@ from os import getenv
 
 place_amenity = Table('place_amenity', Base.metadata,
                       Column('place_id', String(60),
-                             ForeignKey('places.id'), primary_key=True, nullable=False),
+                             ForeignKey('places.id'), primary_key=True,
+                             nullable=False),
                       Column('amenity_id', String(60),
-                             ForeignKey('amenities.id'), primary_key=True, nullable=False)
+                             ForeignKey('amenities.id'), primary_key=True,
+                             nullable=False)
                       )
 
 
@@ -41,18 +43,19 @@ class Place(BaseModel, Base):
                                  viewonly=False,
                                  back_populates='place_amenities')
     else:
-        @ property
+        @property
         def reviews(self):
             from models import storage
             from models.review import Review
-            return [obj for obj in storage.all(Review).values() if obj.place_id == self.id]
+            return [obj for obj in storage.all(Review).values()
+                    if obj.place_id == self.id]
 
         @property
         def amenities(self):
             from models import storage
             return self.amenity_ids
 
-        @ amenities.setter
+        @amenities.setter
         def amenities(self, obj=None):
             if obj.__class__.__name__ == 'Amenity':
                 self.amenity_ids.append(obj.id)

@@ -15,7 +15,7 @@ if not os.path.exists(file_path):
     try:
         from models.engine.file_storage import FileStorage
         file_path = FileStorage._FileStorage__file_path
-    except:
+    except Exception:
         pass
 if os.path.exists(file_path):
     os.remove(file_path)

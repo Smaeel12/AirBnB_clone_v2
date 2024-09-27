@@ -133,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
                 val = int(val)
             try:
                 setattr(new_instance, key, val)
-            except:
+            except Exception:
                 pass
         print(new_instance.id)
         new_instance.save()
