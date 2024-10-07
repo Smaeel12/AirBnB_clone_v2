@@ -42,51 +42,55 @@ exec {'apt upgrade':
 
 # Ensure Nginx is installed
 package {'nginx':
-  ensure => 'installed',
+  ensure  => 'installed',
   require => Exec['apt upgrade'],
-  before => Service['nginx']
+  before  => Service['nginx']
 }
 
 # Ensure Nginx service is running and enabled
 service {'nginx':
-  ensure => 'running',
-  enable => true,
-  require => Package['nginx'],
+  ensure    => 'running',
+  enable    => true,
+  require   => Package['nginx'],
   subscribe => File['/etc/nginx/sites-enabled/default']
 }
 
 # Create the necessary directory structure using the file resource
 file {$folders:
   ensure => 'directory',
-  owner => 'ubuntu',
-  group => 'ubuntu',
 }
 
 # Create a symbolic link to the current release
 file {'/data/web_static/current':
-  ensure => 'link',
-  target => '/data/web_static/releases/test/',
+  ensure  => 'link',
+  target  => '/data/web_static/releases/test/',
   require => File['/data/web_static/releases/test/']
 }
 
+# Change ownership of the /data/ directory recursivly
+exec { '/usr/bin/chown -R ubuntu:ubuntu /data/':
+  require => File['/data/']
+}
+
+
 # Create the index.html file with the specified content
 file {'/data/web_static/releases/test/index.html':
-  ensure => 'present',
+  ensure  => 'present',
   content => $indexfile,
-  owner => 'ubuntu',
-  group => 'ubuntu',
+  owner   => 'ubuntu',
+  group   => 'ubuntu',
   require => File['/data/web_static/releases/test/'],
 }
 
 # Place the Nginx config file in the correct location
 file {'/etc/nginx/sites-available/airbnb':
-  ensure => 'present',
+  ensure  => 'present',
   content => $nginxconfig,
   require => Package['nginx'],
 }
 
 file {'/etc/nginx/sites-enabled/default':
-  ensure => 'link',
-  target => '/etc/nginx/sites-available/airbnb',
+  ensure  => 'link',
+  target  => '/etc/nginx/sites-available/airbnb',
   require => File['/etc/nginx/sites-available/airbnb'],
 }

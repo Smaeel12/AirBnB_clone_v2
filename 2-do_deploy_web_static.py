@@ -33,7 +33,7 @@ def do_deploy(archive_path):
     Return: True if all operations have been done correctly,
     otherwise returns False
     """
-    if not path.exists(archive_path):
+    if not path.isfile(archive_path):
         return False
 
     try:
