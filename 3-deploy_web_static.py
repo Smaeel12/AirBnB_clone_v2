@@ -4,13 +4,11 @@ web_static folder of your AirBnB Clone repo, using the function do_pack
 """
 from datetime import datetime
 from fabric.api import local, run, put, env
-from fabric.decorators import runs_once
 from os import path
 
 env.hosts = ['54.157.150.179', '34.207.237.246']
 
 
-@runs_once
 def do_pack():
     """ pack function
     Return: the archive path if the archive has been correctly generated,
@@ -35,7 +33,7 @@ def do_deploy(archive_path):
     Return: True if all operations have been done correctly,
     otherwise returns False
     """
-    if not path.exists(archive_path):
+    if not path.isfile(archive_path):
         return False
 
     try:
@@ -63,7 +61,4 @@ def deploy():
     """ deploy function
     Return: the return value of do_deploy
     """
-    archive_path = do_pack()
-    if not archive_path:
-        return False
-    return do_deploy(archive_path)
+    return do_deploy(do_pack())
