@@ -56,6 +56,7 @@ def do_deploy(archive_path):
     except Exception:
         return False
 
+
 def deploy():
     """ deploy function
     Return: the return value of do_deploy
@@ -66,6 +67,7 @@ def deploy():
 
     res = do_deploy(archive_path)
     return res
+
 
 def do_clean(number=0):
     files = listdir('versions')
