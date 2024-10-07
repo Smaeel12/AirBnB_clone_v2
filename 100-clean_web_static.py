@@ -3,26 +3,30 @@
 web_static folder of your AirBnB Clone repo, using the function do_pack
 """
 from datetime import datetime
-from fabric.api import local
-from os import path
+from fabric.api import local, run, put, env
+from fabric.decorators import runs_once
+from os import path, listdir, remove
+
+env.hosts = ['54.157.150.179', '34.207.237.246']
 
 
+@runs_once
 def do_pack():
     """ pack function
     Return: the archive path if the archive has been correctly generated,
     otherwise, it should return None
     """
     try:
-        if not path.exists('versions'):
-            local('mkdir -p versions')
+        if not path.isdir('versions'):
+            local('mkdir versions')
         archive_name = 'versions/web_static_{}.tgz'.format(
             datetime.strftime(datetime.now(), '%Y%m%d%H%M%S'))
         print('Packing web_static to {}'.format(archive_name))
         local('tar -cvzf {} web_static'.format(archive_name))
-        print('web_static packed: {} -> {}Bytes'.format(archive_name,
-              path.getsize(archive_name)))
+        print('web_static packed: {} -> {}Bytes'.format(
+            archive_name, path.getsize(archive_name)))
         return archive_name
-    except Exception:
+    except BaseException:
         return None
 
 
@@ -62,9 +66,7 @@ def deploy():
     archive_path = do_pack()
     if not archive_path:
         return False
-
-    res = do_deploy(archive_path)
-    return res
+    return do_deploy(archive_path)
 
 
 def do_clean(number=0):

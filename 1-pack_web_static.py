@@ -13,14 +13,14 @@ def do_pack():
     otherwise, it should return None
     """
     try:
-        if not path.exists('versions'):
-            local('mkdir -p versions')
+        if not path.isdir('versions'):
+            local('mkdir versions')
         archive_name = 'versions/web_static_{}.tgz'.format(
             datetime.strftime(datetime.now(), '%Y%m%d%H%M%S'))
         print('Packing web_static to {}'.format(archive_name))
         local('tar -cvzf {} web_static'.format(archive_name))
-        print('web_static packed: {} -> {}Bytes'.format(archive_name,
-              path.getsize(archive_name)))
+        print('web_static packed: {} -> {}Bytes'.format(
+            archive_name, path.getsize(archive_name)))
         return archive_name
-    except Exception:
+    except BaseException:
         return None
