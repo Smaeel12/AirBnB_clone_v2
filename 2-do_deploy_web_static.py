@@ -24,7 +24,7 @@ def do_pack():
         print('web_static packed: {} -> {}Bytes'.format(archive_name,
               path.getsize(archive_name)))
         return archive_name
-    except BaseException:
+    except Exception:
         return None
 
 
@@ -37,13 +37,12 @@ def do_deploy(archive_path):
         return False
 
     try:
-        put('cp {} /tmp/'.format(archive_path))
+        put(archive_path, '/tmp/')
         archive_name = path.basename(archive_path).rstrip('.tgz')
         run('mkdir -p /data/web_static/releases/{}/'.format(archive_name))
         run('tar -xzf /tmp/{0}.tgz -C /data/web_static/releases/{0}'.format(
             archive_name))
         run('rm /tmp/{}.tgz'.format(archive_name))
-        run('mv /data/web_static/releases/{}.tgz'.format(archive_name))
         run('mv /data/web_static/releases/{0}/web_static/* \
             /data/web_static/releases/{0}/'.format(
             archive_name))
@@ -54,5 +53,5 @@ def do_deploy(archive_path):
             /data/web_static/current'.format(archive_name))
         print('New version deployed!')
         return True
-    except BaseException:
+    except Exception:
         return False

@@ -26,6 +26,9 @@ server {
 }
 END
 
+$folders = ['/data/', '/data/web_static/', '/data/web_static/releases/',
+'/data/web_static/shared/', '/data/web_static/releases/test/']
+
 # Update and upgrade system packages
 exec { 'apt update':
   command => '/usr/bin/apt update -y',
@@ -52,19 +55,17 @@ service { 'nginx':
 }
 
 # Create the necessary directory structure using the file resource
-file { '/data':
+file { $folders:
   ensure => 'directory',
   owner  => 'ubuntu',
   group  => 'ubuntu',
 }
 
-exec { '/usr/bin/mkdir -p /data/web_static/shared/':
-  require => File['/data'],
-}
-
-exec { 'dir test':
-  command => '/usr/bin/mkdir  -p /data/web_static/releases/test/',
-  require => File['/data'],
+# Create a symbolic link to the current release
+file { '/data/web_static/current':
+  ensure  => 'link',
+  target  => '/data/web_static/releases/test/',
+  require => File['/data/web_static/releases/test/']
 }
 
 # Create the index.html file with the specified content
@@ -73,14 +74,7 @@ file { '/data/web_static/releases/test/index.html':
   content => $indexfile,
   owner   => 'ubuntu',
   group   => 'ubuntu',
-  require => Exec['dir test'],
-}
-
-# Create a symbolic link to the current release
-file { '/data/web_static/current':
-  ensure  => 'link',
-  target  => '/data/web_static/releases/test/',
-  require => Exec['dir test']
+  require => File['/data/web_static/releases/test/'],
 }
 
 # Place the Nginx config file in the correct location
