@@ -3,12 +3,13 @@
 web_static folder of your AirBnB Clone repo, using the function do_pack
 """
 from datetime import datetime
-from fabric.api import local, run, put, env
+from fabric.api import local, run, put, env, lcd, cd
+from fabric.decorators import runs_once
 from os import path, listdir, remove
 
 env.hosts = ['54.157.150.179', '34.207.237.246']
 
-
+@runs_once
 def do_pack():
     """ pack function
     Return: the archive path if the archive has been correctly generated,
@@ -70,9 +71,7 @@ def do_clean(number=0):
     number is 2, keeps the most and second-most recent archives, etc.
     """
     files = listdir('versions')
-    number = int(number)
-    if not number:
-        number = 1
+    number = 1 if number == 0 else int(number)
 
     for i in range(number, len(files)):
         remove('versions/' + files[i])

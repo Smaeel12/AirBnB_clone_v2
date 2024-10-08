@@ -4,11 +4,12 @@ web_static folder of your AirBnB Clone repo, using the function do_pack
 """
 from datetime import datetime
 from fabric.api import local, run, put, env
+from fabric.decorators import runs_once
 from os import path
 
 env.hosts = ['54.157.150.179', '34.207.237.246']
 
-
+@runs_once
 def do_pack():
     """ pack function
     Return: the archive path if the archive has been correctly generated,
