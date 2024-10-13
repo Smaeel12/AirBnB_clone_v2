@@ -7,7 +7,8 @@
 	border-radius: 4px;
 }
 
-.locations {
+.filters .locations,
+.filters .amenities {
 	display: inline;
 	vertical-align: middle;
 	float: left;
@@ -15,24 +16,19 @@
 	width: 25%;
 
 	line-height: 20px;
+}
+
+.filters .locations {
 	border-right: 1px solid #DDDDDD;
 }
 
-.filter_amenities {
-	display: inline;
-	vertical-align: middle;
-	height: 100%;
-	float: left;
-    width: 25%;
-
-	line-height: 20px;
-}
-
-.popover {
+.filters .popover {
 	list-style-type: none;
 	display: none;
 	background-color: #FAFAFA;
 	width: 100%;
+	max-height: 300px;
+	overflow-y: auto;
 
 	margin-left: -1px;
 	margin-top: 8px;
@@ -42,11 +38,8 @@
 	border-radius: 4px;
 }
 
-.locations:hover .popover {
-	display: inline-block;
-}
-
-.filter_amenities:hover .popover {
+.filters .locations:hover .popover,
+.filters .amenities:hover .popover {
 	display: inline-block;
 }
 
@@ -55,9 +48,6 @@ ul {
 	padding: 0px;
 	padding-bottom: 20px;
 }
-
-li {
-}	
 
 h2 {
 	font-size: 16px;
@@ -68,7 +58,7 @@ h2 {
 h3 {
 	font-weight: 600;
 	margin-top: 12px;
-	margin-bottom: 5px;	
+	margin-bottom: 5px;
 	padding-left: 45px;
 }
 
@@ -83,7 +73,7 @@ h4 {
 button {
 	color: #FFFFFF;
 	font-size: 18px;
-	
+
 	height: 48px;
 	width: 20%;
 	background-color: #FF5A5F;
